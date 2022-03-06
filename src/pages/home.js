@@ -1,28 +1,45 @@
 import React from "react";
+import { useState, useEffect } from "react";
+import axios from 'axios'; 
 class Home extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            articles:null
+        }
+    }
+    componentDidMount(){
+        fetch('http://127.0.0.1:8000/api/articles').then((resp)=>{
+            resp.json().then((result)=>{
+                //console.warn(result.data)
+                this.setState({articles:result})
+            })
+        })
+    }
     render(){
        return( <div>
       {/*   <!-- Responsive navbar--> */}
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style={{borderBottom: `1px solid #fff`}}>
             <div class="container">
-                <a class="navbar-brand" href="#!">Start Bootstrap</a>
+                <a class="navbar-brand" href="#!">MY WORLD</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
                         <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Blog</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
         {/* <!-- Page header with logo and tagline--> */}
-        <header class="py-5 bg-light border-bottom mb-4">
+        <header class="py-5 bg-light border-bottom mb-4" style={{ 
+      backgroundImage: `url("maxresdefault.jpg")` 
+    }} >
             <div class="container">
                 <div class="text-center my-5">
-                    <h1 class="fw-bolder">Welcome to Blog Home!</h1>
-                    <p class="lead mb-0">A Bootstrap 5 starter layout for your next blog homepage</p>
+                    <h1 class="fw-bolder" style={{textShadow: `25px 0px 25px white`}}>Welcome to My World!</h1>
+                    <p class="lead mb-0"></p>
                 </div>
             </div>
         </header>
@@ -30,7 +47,7 @@ class Home extends React.Component {
         <div class="container">
             <div class="row">
                 {/* <!-- Blog entries--> */}
-                <div class="col-lg-8">
+                <div class="col-md-9">
                     {/* <!-- Featured blog post--> */}
                     <div class="card mb-4">
                         <a href="#!"><img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg" alt="..." /></a>
@@ -42,52 +59,32 @@ class Home extends React.Component {
                         </div>
                     </div>
                    {/*  <!-- Nested row for non-featured blog posts--> */}
+                
                     <div class="row">
-                        <div class="col-lg-6">
-                         {/*    <!-- Blog post--> */}
-                            <div class="card mb-4">
-                                <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-                                <div class="card-body">
-                                    <div class="small text-muted">January 1, 2021</div>
-                                    <h2 class="card-title h4">Post Title</h2>
-                                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla.</p>
-                                    <a class="btn btn-primary" href="#!">Read more →</a>
-                                </div>
-                            </div>
-                            {/* <!-- Blog post--> */}
-                            <div class="card mb-4">
-                                <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-                                <div class="card-body">
-                                    <div class="small text-muted">January 1, 2021</div>
-                                    <h2 class="card-title h4">Post Title</h2>
-                                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla.</p>
-                                    <a class="btn btn-primary" href="#!">Read more →</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                           {/*  <!-- Blog post--> */}
-                            <div class="card mb-4">
-                                <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-                                <div class="card-body">
-                                    <div class="small text-muted">January 1, 2021</div>
-                                    <h2 class="card-title h4">Post Title</h2>
-                                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla.</p>
-                                    <a class="btn btn-primary" href="#!">Read more →</a>
-                                </div>
-                            </div>
-                           {/*  <!-- Blog post--> */}
-                            <div class="card mb-4">
-                                <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-                                <div class="card-body">
-                                    <div class="small text-muted">January 1, 2021</div>
-                                    <h2 class="card-title h4">Post Title</h2>
-                                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam.</p>
-                                    <a class="btn btn-primary" href="#!">Read more →</a>
-                                </div>
-                            </div>
-                        </div>
+    {
+
+        this.state.articles ?
+        this.state.articles.map((item,i)=>
+    <div class="col-md-6">
+        <div  style={{ border: `1px solid #dee1e6`,
+        padding: `0px` }}>
+        <a href="#"><img class="card-img-top" src={item.picture} alt="..." /></a>
+        <div class="card-body">
+            <div class="small text-muted">January 1, 2021</div>
+            <h2 class="card-title h4">Post Title</h2>
+            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla.</p>
+            <a class="btn btn-primary" href="#">Read more →</a>
+        </div>
+        </div>
+        <br/>
+    </div> 
+        )
+        :
+        null
+    }
+                    
                     </div>
+                    <br/>
                     {/* <!-- Pagination--> */}
                     <nav aria-label="Pagination">
                         <hr class="my-0" />
@@ -103,7 +100,7 @@ class Home extends React.Component {
                     </nav>
                 </div>
                 {/* <!-- Side widgets--> */}
-                <div class="col-lg-4">
+                <div class="col-md-3">
                   {/*   <!-- Search widget--> */}
                     <div class="card mb-4">
                         <div class="card-header">Search</div>
