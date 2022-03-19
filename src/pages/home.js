@@ -1,11 +1,13 @@
 import React from "react";
-import { useState, useEffect } from "react";
-import axios from 'axios'; 
+import moment from 'moment';
 class Home extends React.Component {
+    
     constructor() {
         super();
         this.state = {
-            articles:null
+            articles:null,
+            featured_articles:null,
+            category:null
         }
     }
     componentDidMount(){
@@ -13,6 +15,20 @@ class Home extends React.Component {
             resp.json().then((result)=>{
                 //console.warn(result.data)
                 this.setState({articles:result})
+            })
+        })
+
+        fetch('http://127.0.0.1:8000/api/featured_articles').then((response)=>{
+            response.json().then((result2)=>{
+                //console.warn(result2.data)
+                this.setState({featured_articles:result2})
+            })
+        })
+
+
+        fetch('http://127.0.0.1:8000/api/categories').then((cat_response)=>{
+            cat_response.json().then((category_result)=>{
+                this.setState({category:category_result})
             })
         })
     }
@@ -25,9 +41,14 @@ class Home extends React.Component {
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
+                    {
+                    this.state.category ?
+        this.state.category.map((cat,i)=>
+                        <li class="nav-item"><a class="nav-link" style={{color: `#fff`,fontSize: `25px`, marginright: `15px`}} href="#">{cat.name}</a></li>
+                        )
+                        :
+                        null
+                    }
                     </ul>
                 </div>
             </div>
@@ -49,8 +70,11 @@ class Home extends React.Component {
                 {/* <!-- Blog entries--> */}
                 <div class="col-md-9">
                     {/* <!-- Featured blog post--> */}
+                    {
+                    this.state.featured_articles ?
+        this.state.featured_articles.map((featured_item,i)=>
                     <div class="card mb-4">
-                        <a href="#!"><img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg" alt="..." /></a>
+                        <a href="#!"><img class="card-img-top" src={featured_item.picture} alt="..." /></a>
                         <div class="card-body">
                             <div class="small text-muted">January 1, 2021</div>
                             <h2 class="card-title">Featured Post Title</h2>
@@ -58,6 +82,10 @@ class Home extends React.Component {
                             <a class="btn btn-primary" href="#!">Read more →</a>
                         </div>
                     </div>
+                    )
+        :
+        null
+    }
                    {/*  <!-- Nested row for non-featured blog posts--> */}
                 
                     <div class="row">
@@ -70,9 +98,9 @@ class Home extends React.Component {
         padding: `0px` }}>
         <a href="#"><img class="card-img-top" src={item.picture} alt="..." /></a>
         <div class="card-body">
-            <div class="small text-muted">January 1, 2021</div>
-            <h2 class="card-title h4">Post Title</h2>
-            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla.</p>
+            <div class="small text-muted">{moment(item.created_at).format("YYYY-MM-DD")}</div>
+            <h2 class="card-title h4">{item.title}</h2>
+            <p class="card-text">{item.description}</p>
             <a class="btn btn-primary" href="#">Read more →</a>
         </div>
         </div>
