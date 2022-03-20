@@ -1,5 +1,6 @@
 import React from "react";
 import moment from 'moment';
+import Header from './Header';
 class Home extends React.Component {
     
     constructor() {
@@ -35,24 +36,7 @@ class Home extends React.Component {
     render(){
        return( <div>
       {/*   <!-- Responsive navbar--> */}
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style={{borderBottom: `1px solid #fff`}}>
-            <div class="container">
-                <a class="navbar-brand" href="#!">MY WORLD</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    {
-                    this.state.category ?
-        this.state.category.map((cat,i)=>
-                        <li class="nav-item"><a class="nav-link" style={{color: `#fff`,fontSize: `25px`, marginright: `15px`}} href="#">{cat.name}</a></li>
-                        )
-                        :
-                        null
-                    }
-                    </ul>
-                </div>
-            </div>
-        </nav>
+      <Header />
         {/* <!-- Page header with logo and tagline--> */}
         <header class="py-5 bg-light border-bottom mb-4" style={{ 
       backgroundImage: `url("maxresdefault.jpg")` 
