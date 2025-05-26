@@ -47,9 +47,5 @@ react-blog-template/
 ├── package.json
 └── README.md
 
-# Screenshot
-
-![Uploading Screenshot 2025-05-26 at 6.49.10 AM.png…]()
-
 
 
